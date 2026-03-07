@@ -9,715 +9,188 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #050810;
-      --bg2: #080d1a;
-      --surface: #0d1426;
-      --border: rgba(255,255,255,0.07);
-      --accent: #0af0b0;
-      --accent2: #0074ff;
-      --accent3: #7b2fff;
-      --text: #e8edf8;
-      --muted: #6b7a99;
-      --card: rgba(255,255,255,0.03);
+      --bg: #f4f6fb;
+      --bg2: #eaecf7;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.09);
+      --accent: #0057cc;
+      --accent3: #6418d8;
+      --accentg: #00a67e;
+      --text: #0d1630;
+      --muted: #5a6480;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    /* ─── NOISE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.4;
-    }
-
-    /* ─── SCROLLBAR ─── */
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
-    /* ─── NAV ─── */
+    /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 5%;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5%;
+      background: rgba(244,246,251,0.92);
       backdrop-filter: blur(20px);
-      background: rgba(5,8,16,0.7);
       border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 16px rgba(0,0,0,0.06);
     }
-
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+    .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.35rem; letter-spacing:-0.02em; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:0.5rem; }
     .logo span { color: var(--accent); }
+    .logo-icon { width:32px; height:32px; background:linear-gradient(135deg,var(--accent),var(--accentg)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:800; color:#fff; flex-shrink:0; }
+    nav ul { list-style:none; display:flex; gap:2.5rem; align-items:center; }
+    nav a { text-decoration:none; color:var(--muted); font-size:0.88rem; font-weight:400; transition:color 0.2s; }
+    nav a:hover { color:var(--text); }
+    .nav-cta { padding:0.48rem 1.3rem; background:var(--accent) !important; color:#fff !important; border-radius:6px; font-weight:600 !important; transition:opacity 0.2s !important; }
+    .nav-cta:hover { opacity:0.85; }
 
-    .logo-icon {
-      width: 32px; height: 32px;
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 800; color: #050810;
-      flex-shrink: 0;
-    }
+    /* HERO */
+    .hero { min-height:100vh; display:flex; align-items:center; padding:120px 5% 80px; position:relative; overflow:hidden; }
+    .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 80% 20%,rgba(0,87,204,0.09) 0%,transparent 55%),radial-gradient(ellipse at 10% 80%,rgba(0,166,126,0.07) 0%,transparent 50%); pointer-events:none; }
+    .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px); background-size:56px 56px; mask-image:radial-gradient(ellipse at center,black 0%,transparent 72%); pointer-events:none; }
+    .hero-content { position:relative; z-index:2; max-width:780px; }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-      align-items: center;
-    }
+    .badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.38rem 1rem; border:1px solid rgba(0,87,204,0.25); border-radius:100px; background:rgba(0,87,204,0.07); font-size:0.78rem; color:var(--accent); font-weight:600; letter-spacing:0.05em; margin-bottom:2rem; }
+    .badge-dot { width:6px; height:6px; background:var(--accentg); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.6)} }
 
-    nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      transition: color 0.2s;
-    }
-    nav a:hover { color: var(--text); }
+    h1 { font-family:'Syne',sans-serif; font-size:clamp(2.8rem,6vw,5.2rem); font-weight:800; line-height:1.0; letter-spacing:-0.03em; margin-bottom:1.5rem; color:var(--text); }
+    h1 em { font-style:normal; background:linear-gradient(135deg,var(--accent) 0%,var(--accentg) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-    .nav-cta {
-      padding: 0.5rem 1.3rem;
-      background: var(--accent);
-      color: #050810 !important;
-      border-radius: 6px;
-      font-weight: 600 !important;
-      font-size: 0.85rem !important;
-      transition: opacity 0.2s !important;
-    }
-    .nav-cta:hover { opacity: 0.85; }
+    .hero-sub { font-size:1.1rem; color:var(--muted); max-width:520px; margin-bottom:2.5rem; font-weight:300; }
+    .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; }
 
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 5% 80px;
-      position: relative;
-      overflow: hidden;
-    }
+    .btn-primary { padding:0.85rem 2rem; background:var(--accent); color:#fff; font-weight:600; font-size:0.92rem; border-radius:8px; text-decoration:none; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem; transition:transform 0.2s,box-shadow 0.2s; box-shadow:0 4px 20px rgba(0,87,204,0.25); }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,87,204,0.35); }
+    .btn-secondary { padding:0.85rem 2rem; background:var(--surface); color:var(--text); font-weight:500; font-size:0.92rem; border-radius:8px; text-decoration:none; border:1px solid var(--border); display:inline-flex; align-items:center; gap:0.5rem; transition:border-color 0.2s,box-shadow 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .btn-secondary:hover { border-color:rgba(0,87,204,0.3); box-shadow:0 4px 16px rgba(0,0,0,0.08); }
 
-    .hero-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-    .hero-orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,116,255,0.18) 0%, transparent 70%);
-      top: -100px; right: -100px;
-      animation: float1 8s ease-in-out infinite;
-    }
-    .hero-orb-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(10,240,176,0.12) 0%, transparent 70%);
-      bottom: 0; left: 10%;
-      animation: float2 10s ease-in-out infinite;
-    }
-    .hero-orb-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(123,47,255,0.15) 0%, transparent 70%);
-      top: 30%; right: 30%;
-      animation: float3 12s ease-in-out infinite;
-    }
+    .hero-stats { display:flex; gap:3rem; margin-top:4rem; padding-top:2.5rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+    .stat-val { font-family:'Syne',sans-serif; font-size:2.2rem; font-weight:800; color:var(--accent); line-height:1; }
+    .stat-label { font-size:0.78rem; color:var(--muted); margin-top:0.3rem; }
 
-    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,30px)} }
-    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
-    @keyframes float3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-15px,25px)} }
+    /* SECTION */
+    section { padding:6rem 5%; }
+    .section-tag { font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:0.8rem; }
+    .section-title { font-family:'Syne',sans-serif; font-size:clamp(1.9rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-0.03em; line-height:1.1; margin-bottom:1rem; color:var(--text); }
+    .section-desc { color:var(--muted); max-width:540px; font-size:0.98rem; font-weight:300; }
+    .section-header { margin-bottom:3.5rem; }
 
-    /* Grid lines background */
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-    }
+    /* SERVICES */
+    #services { background:var(--bg2); }
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5px; background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 4px 32px rgba(0,0,0,0.06); }
+    .service-card { background:var(--surface); padding:2.5rem; transition:background 0.3s; }
+    .service-card:hover { background:#f6f8ff; }
+    .service-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; font-size:1.4rem; }
+    .icon-blue  { background:rgba(0,87,204,0.08);  border:1px solid rgba(0,87,204,0.15); }
+    .icon-green { background:rgba(0,166,126,0.08); border:1px solid rgba(0,166,126,0.15); }
+    .icon-purple{ background:rgba(100,24,216,0.07);border:1px solid rgba(100,24,216,0.14); }
+    .icon-orange{ background:rgba(210,100,0,0.07); border:1px solid rgba(210,100,0,0.14); }
+    .service-card h3 { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:0.7rem; color:var(--text); }
+    .service-card p { color:var(--muted); font-size:0.88rem; line-height:1.65; font-weight:300; }
+    .service-tags { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1.2rem; }
+    .service-tag { padding:0.2rem 0.65rem; border-radius:4px; background:var(--bg); border:1px solid var(--border); font-size:0.7rem; color:var(--muted); }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 780px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border: 1px solid rgba(10,240,176,0.3);
-      border-radius: 100px;
-      background: rgba(10,240,176,0.06);
-      font-size: 0.8rem;
-      color: var(--accent);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.6s ease both;
-    }
-    .badge-dot {
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
-
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.6s 0.1s ease both;
-    }
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-      font-weight: 300;
-      animation: fadeUp 0.6s 0.2s ease both;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
-
-    .btn-primary {
-      padding: 0.85rem 2rem;
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      color: #050810;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 30px rgba(0,116,255,0.3);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,116,255,0.4); }
-
-    .btn-secondary {
-      padding: 0.85rem 2rem;
-      background: transparent;
-      color: var(--text);
-      font-weight: 500;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
-
-    /* stats strip */
-    .hero-stats {
-      display: flex;
-      gap: 3rem;
-      margin-top: 4rem;
-      padding-top: 3rem;
-      border-top: 1px solid var(--border);
-      animation: fadeUp 0.6s 0.4s ease both;
-    }
-    .stat-val {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ─── SECTION BASE ─── */
-    section { padding: 6rem 5%; }
-    .section-tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1.2rem;
-    }
-    .section-desc {
-      color: var(--muted);
-      max-width: 540px;
-      font-size: 1rem;
-      font-weight: 300;
-    }
-    .section-header { margin-bottom: 3.5rem; }
-
-    /* ─── SERVICES ─── */
-    #services { background: var(--bg2); }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .service-card {
-      background: var(--surface);
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
-    }
-    .service-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0,116,255,0.04), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .service-card:hover { background: rgba(13,20,38,0.9); }
-    .service-card:hover::before { opacity: 1; }
-
-    .service-icon {
-      width: 52px; height: 52px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-    .icon-blue { background: rgba(0,116,255,0.12); border: 1px solid rgba(0,116,255,0.2); }
-    .icon-green { background: rgba(10,240,176,0.1); border: 1px solid rgba(10,240,176,0.2); }
-    .icon-purple { background: rgba(123,47,255,0.1); border: 1px solid rgba(123,47,255,0.2); }
-    .icon-orange { background: rgba(255,160,50,0.1); border: 1px solid rgba(255,160,50,0.2); }
-
-    .service-card h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      position: relative; z-index: 1;
-    }
-    .service-card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.65;
-      font-weight: 300;
-      position: relative; z-index: 1;
-    }
-
-    .service-tags {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-      margin-top: 1.2rem;
-      position: relative; z-index: 1;
-    }
-    .service-tag {
-      padding: 0.2rem 0.65rem;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-    }
-
-    /* ─── INDUSTRIES ─── */
-    #industries { position: relative; overflow: hidden; }
-
-    .industries-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .industry-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .industry-item {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      padding: 1.4rem 1.8rem;
-      background: var(--surface);
-      cursor: pointer;
-      transition: background 0.2s;
-      position: relative;
-    }
-    .industry-item::after {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--accent2);
-      transform: scaleY(0);
-      transition: transform 0.2s;
-    }
-    .industry-item:hover { background: rgba(0,116,255,0.06); }
-    .industry-item:hover::after { transform: scaleY(1); }
-
-    .industry-emoji { font-size: 1.5rem; flex-shrink: 0; }
-    .industry-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .industry-desc { color: var(--muted); font-size: 0.82rem; }
-
-    .industries-right h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-    }
-
-    .industries-visual {
-      margin-top: 2rem;
-      padding: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    .industries-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0,116,255,0.06), rgba(10,240,176,0.04));
-    }
-
-    .expertise-bar { margin-bottom: 1rem; position: relative; z-index: 1; }
-    .expertise-bar:last-child { margin-bottom: 0; }
-    .bar-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.4rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-    .bar-track {
-      height: 4px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      animation: barGrow 1.5s ease both;
-    }
-    .bar-fill-1 { background: linear-gradient(90deg, var(--accent2), var(--accent)); width: 95%; animation-delay: 0.1s; }
-    .bar-fill-2 { background: linear-gradient(90deg, var(--accent3), var(--accent2)); width: 90%; animation-delay: 0.2s; }
-    .bar-fill-3 { background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 88%; animation-delay: 0.3s; }
-    .bar-fill-4 { background: linear-gradient(90deg, var(--accent2), var(--accent3)); width: 85%; animation-delay: 0.4s; }
-
+    /* INDUSTRIES */
+    #industries { background:var(--bg); }
+    .industries-layout { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    .industry-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+    .industry-item { display:flex; align-items:center; gap:1.2rem; padding:1.3rem 1.6rem; background:var(--surface); transition:background 0.2s; position:relative; }
+    .industry-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); transform:scaleY(0); transition:transform 0.2s; }
+    .industry-item:hover { background:#f0f4ff; }
+    .industry-item:hover::before { transform:scaleY(1); }
+    .industry-emoji { font-size:1.4rem; flex-shrink:0; }
+    .industry-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text); }
+    .industry-desc { color:var(--muted); font-size:0.8rem; margin-top:0.1rem; }
+    .industries-visual { margin-top:2rem; padding:2rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+    .expertise-bar { margin-bottom:1.1rem; }
+    .expertise-bar:last-child { margin-bottom:0; }
+    .bar-label { display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.78rem; color:var(--muted); }
+    .bar-label span:last-child { color:var(--accent); font-weight:600; }
+    .bar-track { height:5px; background:var(--bg2); border-radius:3px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:3px; animation:barGrow 1.5s ease both; }
+    .bar-fill-1 { background:linear-gradient(90deg,var(--accent),var(--accentg)); width:95%; animation-delay:0.1s; }
+    .bar-fill-2 { background:linear-gradient(90deg,var(--accent3),var(--accent)); width:90%; animation-delay:0.2s; }
+    .bar-fill-3 { background:linear-gradient(90deg,var(--accent),var(--accent3)); width:88%; animation-delay:0.3s; }
+    .bar-fill-4 { background:linear-gradient(90deg,var(--accentg),var(--accent)); width:85%; animation-delay:0.4s; }
     @keyframes barGrow { from{width:0} }
+    .tip-box { margin-top:1.5rem; padding:1.2rem 1.5rem; background:rgba(0,87,204,0.04); border:1px solid rgba(0,87,204,0.12); border-radius:12px; font-size:0.84rem; color:var(--muted); line-height:1.65; }
+    .tip-box strong { color:var(--text); }
 
-    /* ─── WHY US ─── */
-    #why { background: var(--bg2); }
+    /* WHY */
+    #why { background:var(--bg2); }
+    .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .why-card { padding:2rem; border:1px solid var(--border); border-radius:16px; background:var(--surface); position:relative; overflow:hidden; transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s; }
+    .why-card:hover { border-color:rgba(0,87,204,0.25); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,87,204,0.08); }
+    .why-number { font-family:'Syne',sans-serif; font-size:3.5rem; font-weight:800; color:rgba(0,0,0,0.04); position:absolute; top:1rem; right:1.5rem; line-height:1; letter-spacing:-0.05em; }
+    .why-card h3 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:0.6rem; color:var(--text); }
+    .why-card p { color:var(--muted); font-size:0.86rem; font-weight:300; line-height:1.65; }
 
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+    /* PROCESS */
+    #process { background:var(--bg); overflow:hidden; }
+    .process-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+    .process-steps::before { content:''; position:absolute; top:27px; left:calc(12.5% + 1rem); right:calc(12.5% + 1rem); height:2px; background:linear-gradient(90deg,var(--accent),var(--accentg)); z-index:0; opacity:0.25; }
+    .process-step { text-align:center; padding:0 1.5rem 2rem; position:relative; z-index:1; }
+    .step-circle { width:56px; height:56px; border-radius:50%; background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--accent); box-shadow:0 4px 16px rgba(0,87,204,0.15); }
+    .process-step h3 { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:0.5rem; color:var(--text); }
+    .process-step p { color:var(--muted); font-size:0.82rem; line-height:1.6; }
+
+    /* TECH */
+    #tech { background:var(--bg2); }
+    .tech-grid { display:flex; flex-wrap:wrap; gap:0.85rem; }
+    .tech-pill { display:flex; align-items:center; gap:0.55rem; padding:0.6rem 1.2rem; background:var(--surface); border:1px solid var(--border); border-radius:100px; font-size:0.83rem; font-weight:500; color:var(--text); transition:border-color 0.2s,background 0.2s,box-shadow 0.2s; cursor:default; box-shadow:0 1px 6px rgba(0,0,0,0.04); }
+    .tech-pill:hover { border-color:rgba(0,87,204,0.3); background:rgba(0,87,204,0.04); box-shadow:0 4px 14px rgba(0,87,204,0.08); }
+    .tech-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .dot-blue   { background:var(--accent); }
+    .dot-green  { background:var(--accentg); }
+    .dot-purple { background:var(--accent3); }
+    .dot-orange { background:#e07b00; }
+    .dot-red    { background:#d63b55; }
+
+    /* CONTACT */
+    #contact { background:var(--bg); text-align:center; padding:8rem 5%; position:relative; overflow:hidden; }
+    .contact-bg { position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(0,87,204,0.06) 0%,transparent 65%); pointer-events:none; }
+    #contact .section-tag { display:block; }
+    #contact .section-title { margin:0 auto 1.2rem; max-width:680px; font-size:clamp(2rem,4.5vw,3.5rem); }
+    #contact .section-desc { max-width:480px; margin:0 auto 3rem; text-align:center; }
+    .cta-form { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+    .cta-input { padding:0.9rem 1.5rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:0.92rem; font-family:'DM Sans',sans-serif; width:280px; outline:none; transition:border-color 0.2s,box-shadow 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .cta-input::placeholder { color:var(--muted); }
+    .cta-input:focus { border-color:rgba(0,87,204,0.4); box-shadow:0 0 0 3px rgba(0,87,204,0.08); }
+    .cta-links { display:flex; gap:2rem; justify-content:center; margin-top:2rem; flex-wrap:wrap; position:relative; z-index:1; }
+    .cta-link { display:flex; align-items:center; gap:0.5rem; color:var(--muted); text-decoration:none; font-size:0.86rem; transition:color 0.2s; }
+    .cta-link:hover { color:var(--accent); }
+
+    /* FOOTER */
+    footer { padding:2.5rem 5%; border-top:1px solid var(--border); background:var(--surface); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; }
+    .footer-copy { color:var(--muted); font-size:0.8rem; }
+    .footer-links { display:flex; gap:1.5rem; }
+    .footer-links a { color:var(--muted); text-decoration:none; font-size:0.8rem; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--text); }
+
+    /* REVEAL */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease,transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* MOBILE */
+    @media (max-width:900px) {
+      .industries-layout { grid-template-columns:1fr; gap:2.5rem; }
+      .why-grid { grid-template-columns:1fr 1fr; }
+      .process-steps { grid-template-columns:1fr 1fr; }
+      .process-steps::before { display:none; }
+      nav ul { display:none; }
     }
-
-    .why-card {
-      padding: 2rem;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card);
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .why-card:hover { border-color: rgba(0,116,255,0.3); transform: translateY(-4px); }
-
-    .why-number {
-      font-family: 'Syne', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: rgba(255,255,255,0.04);
-      position: absolute;
-      top: 1rem; right: 1.5rem;
-      line-height: 1;
-      letter-spacing: -0.05em;
-    }
-    .why-card h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-    .why-card p { color: var(--muted); font-size: 0.88rem; font-weight: 300; line-height: 1.65; }
-
-    /* ─── PROCESS ─── */
-    #process { overflow: hidden; }
-
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-    }
-
-    .process-steps::before {
-      content: '';
-      position: absolute;
-      top: 28px;
-      left: calc(12.5% + 1rem);
-      right: calc(12.5% + 1rem);
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      z-index: 0;
-    }
-
-    .process-step {
-      text-align: center;
-      padding: 0 1.5rem 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .step-circle {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 2px solid var(--accent2);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.5rem;
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--accent);
-      position: relative;
-    }
-
-    .process-step h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .process-step p { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
-
-    /* ─── TECH STACK ─── */
-    #tech { background: var(--bg2); }
-
-    .tech-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .tech-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.65rem 1.3rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: border-color 0.2s, background 0.2s;
-      cursor: default;
-    }
-    .tech-pill:hover {
-      border-color: rgba(0,116,255,0.35);
-      background: rgba(0,116,255,0.06);
-    }
-    .tech-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-    }
-    .dot-blue { background: var(--accent2); }
-    .dot-green { background: var(--accent); }
-    .dot-purple { background: var(--accent3); }
-    .dot-orange { background: #ffa032; }
-    .dot-red { background: #ff4f6a; }
-
-    /* ─── CTA ─── */
-    #contact {
-      text-align: center;
-      padding: 8rem 5%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-orb {
-      position: absolute;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,116,255,0.12) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      pointer-events: none;
-    }
-
-    #contact .section-tag { justify-content: center; display: block; }
-    #contact .section-title { font-size: clamp(2.2rem,5vw,4rem); margin: 0 auto 1.5rem; max-width: 700px; }
-    #contact .section-desc { max-width: 500px; margin: 0 auto 3rem; text-align: center; }
-
-    .cta-form {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
-
-    .cta-input {
-      padding: 0.9rem 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-family: 'DM Sans', sans-serif;
-      width: 280px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .cta-input::placeholder { color: var(--muted); }
-    .cta-input:focus { border-color: rgba(0,116,255,0.4); }
-
-    .cta-links {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-      position: relative; z-index: 1;
-    }
-    .cta-link {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: color 0.2s;
-    }
-    .cta-link:hover { color: var(--accent); }
-    .cta-link svg { opacity: 0.7; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 3rem 5%;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .footer-copy {
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-    .footer-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--text); }
-
-    /* ─── SCROLL REVEAL ─── */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── MOBILE ─── */
-    @media (max-width: 900px) {
-      .industries-layout { grid-template-columns: 1fr; }
-      .why-grid { grid-template-columns: 1fr 1fr; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
-      nav ul { display: none; }
-    }
-
-    @media (max-width: 600px) {
-      .why-grid { grid-template-columns: 1fr; }
-      .process-steps { grid-template-columns: 1fr; }
-      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    @media (max-width:600px) {
+      .why-grid { grid-template-columns:1fr; }
+      .process-steps { grid-template-columns:1fr; }
+      .hero-stats { gap:1.5rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══ NAV ═══ -->
 <nav>
   <a href="#" class="logo">
     <div class="logo-icon">IX</div>
@@ -732,274 +205,128 @@
   </ul>
 </nav>
 
-<!-- ═══ HERO ═══ -->
+<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-orb hero-orb-3"></div>
-
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
   <div class="hero-content">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Oracle APEX Certified Experts
-    </div>
-
-    <h1>
-      We Build &amp;<br/>
-      <em>Transform</em><br/>
-      with Oracle APEX
-    </h1>
-
-    <p class="hero-sub">
-      Custom Oracle APEX applications and seamless Oracle Fusion extensions — 
-      engineered for Healthcare, Retail, Banking, Finance, and beyond.
-    </p>
-
+    <div class="badge"><span class="badge-dot"></span>Oracle APEX Certified Experts</div>
+    <h1>We Build &amp;<br/><em>Transform</em><br/>with Oracle APEX</h1>
+    <p class="hero-sub">Custom Oracle APEX applications and seamless Oracle Fusion extensions — engineered for Healthcare, Retail, Banking, Finance, and beyond.</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">
-        Start Your Project
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#services" class="btn-secondary">
-        Explore Services
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <a href="#contact" class="btn-primary">Start Your Project <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#services" class="btn-secondary">Explore Services <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-
     <div class="hero-stats">
-      <div>
-        <div class="stat-val">10+</div>
-        <div class="stat-label">Years of Oracle APEX Experience</div>
-      </div>
-      <div>
-        <div class="stat-val">50+</div>
-        <div class="stat-label">APEX Projects Delivered</div>
-      </div>
-      <div>
-        <div class="stat-val">5+</div>
-        <div class="stat-label">Industry Verticals</div>
-      </div>
+      <div><div class="stat-val">10+</div><div class="stat-label">Years of Oracle APEX Experience</div></div>
+      <div><div class="stat-val">50+</div><div class="stat-label">APEX Projects Delivered</div></div>
+      <div><div class="stat-val">5+</div><div class="stat-label">Industry Verticals</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SERVICES ═══ -->
+<!-- SERVICES -->
 <section id="services">
   <div class="section-header reveal">
     <div class="section-tag">What We Do</div>
     <h2 class="section-title">End-to-End Oracle APEX<br/>Services &amp; Solutions</h2>
     <p class="section-desc">From greenfield APEX builds to complex Fusion extensions, we deliver enterprise-grade applications with precision.</p>
   </div>
-
   <div class="services-grid reveal">
     <div class="service-card">
       <div class="service-icon icon-blue">🏗️</div>
       <h3>Custom APEX Application Development</h3>
       <p>End-to-end development of Oracle APEX applications tailored to your business logic — from data modelling and UI design to deployment and performance tuning.</p>
-      <div class="service-tags">
-        <span class="service-tag">APEX 23.x / 24.x</span>
-        <span class="service-tag">PL/SQL</span>
-        <span class="service-tag">Oracle DB</span>
-      </div>
+      <div class="service-tags"><span class="service-tag">APEX 23.x / 24.x</span><span class="service-tag">PL/SQL</span><span class="service-tag">Oracle DB</span></div>
     </div>
-
     <div class="service-card">
       <div class="service-icon icon-green">⚡</div>
       <h3>Oracle Fusion Extension &amp; Integration</h3>
       <p>Extend Oracle Fusion ERP/HCM capabilities using Oracle APEX, REST APIs, and FBDI. We bridge gaps that Fusion's native tools can't fill — faster and cost-effectively.</p>
-      <div class="service-tags">
-        <span class="service-tag">Fusion ERP</span>
-        <span class="service-tag">Fusion HCM</span>
-        <span class="service-tag">REST APIs</span>
-        <span class="service-tag">FBDI</span>
-      </div>
+      <div class="service-tags"><span class="service-tag">Fusion ERP</span><span class="service-tag">Fusion HCM</span><span class="service-tag">REST APIs</span><span class="service-tag">FBDI</span></div>
     </div>
-
     <div class="service-card">
       <div class="service-icon icon-purple">🔄</div>
       <h3>APEX Migration &amp; Modernization</h3>
       <p>Migrate legacy Oracle Forms, OBIEE reports, or older APEX versions to modern, responsive APEX applications with contemporary UX and improved performance.</p>
-      <div class="service-tags">
-        <span class="service-tag">Oracle Forms</span>
-        <span class="service-tag">Legacy Systems</span>
-        <span class="service-tag">Responsive UI</span>
-      </div>
+      <div class="service-tags"><span class="service-tag">Oracle Forms</span><span class="service-tag">Legacy Systems</span><span class="service-tag">Responsive UI</span></div>
     </div>
-
     <div class="service-card">
       <div class="service-icon icon-orange">📊</div>
       <h3>Reporting &amp; Analytics Dashboards</h3>
-      <p>Interactive dashboards and operational reports built on Oracle APEX — using native charts, Oracle Analytics integration, and real-time KPI monitoring for informed decisions.</p>
-      <div class="service-tags">
-        <span class="service-tag">APEX Charts</span>
-        <span class="service-tag">OAC Integration</span>
-        <span class="service-tag">BI Publisher</span>
-      </div>
+      <p>Interactive dashboards and operational reports built on Oracle APEX — using native charts, Oracle Analytics integration, and real-time KPI monitoring.</p>
+      <div class="service-tags"><span class="service-tag">APEX Charts</span><span class="service-tag">OAC Integration</span><span class="service-tag">BI Publisher</span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ INDUSTRIES ═══ -->
+<!-- INDUSTRIES -->
 <section id="industries">
   <div class="industries-layout">
     <div class="reveal">
       <div class="section-tag">Industry Expertise</div>
       <h2 class="section-title">Domain-Deep<br/>Industry Knowledge</h2>
-      <p class="section-desc" style="margin-bottom:2rem;">
-        We don't just write code — we understand your industry's regulations, workflows, and pain points to build solutions that truly fit.
-      </p>
-
+      <p class="section-desc" style="margin-bottom:2rem;">We don't just write code — we understand your industry's regulations, workflows, and pain points to build solutions that truly fit.</p>
       <div class="industry-list">
-        <div class="industry-item">
-          <span class="industry-emoji">🏥</span>
-          <div>
-            <div class="industry-name">Healthcare</div>
-            <div class="industry-desc">Patient portals, EMR integrations, compliance dashboards</div>
-          </div>
-        </div>
-        <div class="industry-item">
-          <span class="industry-emoji">🛒</span>
-          <div>
-            <div class="industry-name">Retail</div>
-            <div class="industry-desc">Inventory management, POS integrations, supply chain</div>
-          </div>
-        </div>
-        <div class="industry-item">
-          <span class="industry-emoji">🏦</span>
-          <div>
-            <div class="industry-name">Banking</div>
-            <div class="industry-desc">Loan processing, KYC workflows, regulatory reporting</div>
-          </div>
-        </div>
-        <div class="industry-item">
-          <span class="industry-emoji">💹</span>
-          <div>
-            <div class="industry-name">Finance</div>
-            <div class="industry-desc">GL reconciliation, financial reporting, audit trails</div>
-          </div>
-        </div>
-        <div class="industry-item">
-          <span class="industry-emoji">🏭</span>
-          <div>
-            <div class="industry-name">Manufacturing</div>
-            <div class="industry-desc">Production tracking, quality control, MRP extensions</div>
-          </div>
-        </div>
+        <div class="industry-item"><span class="industry-emoji">🏥</span><div><div class="industry-name">Healthcare</div><div class="industry-desc">Patient portals, EMR integrations, compliance dashboards</div></div></div>
+        <div class="industry-item"><span class="industry-emoji">🛒</span><div><div class="industry-name">Retail</div><div class="industry-desc">Inventory management, POS integrations, supply chain</div></div></div>
+        <div class="industry-item"><span class="industry-emoji">🏦</span><div><div class="industry-name">Banking</div><div class="industry-desc">Loan processing, KYC workflows, regulatory reporting</div></div></div>
+        <div class="industry-item"><span class="industry-emoji">💹</span><div><div class="industry-name">Finance</div><div class="industry-desc">GL reconciliation, financial reporting, audit trails</div></div></div>
+        <div class="industry-item"><span class="industry-emoji">🏭</span><div><div class="industry-name">Manufacturing</div><div class="industry-desc">Production tracking, quality control, MRP extensions</div></div></div>
       </div>
     </div>
-
     <div class="reveal">
       <div class="industries-visual">
-        <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1;">Expertise Depth</p>
-        <div class="expertise-bar">
-          <div class="bar-label"><span>Oracle APEX Development</span><span style="color:var(--accent)">95%</span></div>
-          <div class="bar-track"><div class="bar-fill bar-fill-1"></div></div>
-        </div>
-        <div class="expertise-bar">
-          <div class="bar-label"><span>Oracle Fusion Integrations</span><span style="color:var(--accent)">90%</span></div>
-          <div class="bar-track"><div class="bar-fill bar-fill-2"></div></div>
-        </div>
-        <div class="expertise-bar">
-          <div class="bar-label"><span>PL/SQL &amp; Database Design</span><span style="color:var(--accent)">88%</span></div>
-          <div class="bar-track"><div class="bar-fill bar-fill-3"></div></div>
-        </div>
-        <div class="expertise-bar">
-          <div class="bar-label"><span>REST APIs &amp; Webservices</span><span style="color:var(--accent)">85%</span></div>
-          <div class="bar-track"><div class="bar-fill bar-fill-4"></div></div>
-        </div>
+        <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem;">Expertise Depth</p>
+        <div class="expertise-bar"><div class="bar-label"><span>Oracle APEX Development</span><span>95%</span></div><div class="bar-track"><div class="bar-fill bar-fill-1"></div></div></div>
+        <div class="expertise-bar"><div class="bar-label"><span>Oracle Fusion Integrations</span><span>90%</span></div><div class="bar-track"><div class="bar-fill bar-fill-2"></div></div></div>
+        <div class="expertise-bar"><div class="bar-label"><span>PL/SQL &amp; Database Design</span><span>88%</span></div><div class="bar-track"><div class="bar-fill bar-fill-3"></div></div></div>
+        <div class="expertise-bar"><div class="bar-label"><span>REST APIs &amp; Webservices</span><span>85%</span></div><div class="bar-track"><div class="bar-fill bar-fill-4"></div></div></div>
       </div>
-
-      <div style="margin-top:1.5rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;">
-        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
-          💡 <strong style="color:var(--text)">Tip:</strong> Oracle APEX runs on your existing Oracle Database — no extra licensing, no proprietary runtime. It's the most cost-effective way to build enterprise apps.
-        </p>
-      </div>
+      <div class="tip-box">💡 <strong>Tip:</strong> Oracle APEX runs on your existing Oracle Database — no extra licensing, no proprietary runtime. It's the most cost-effective way to build enterprise apps.</div>
     </div>
   </div>
 </section>
 
-<!-- ═══ WHY US ═══ -->
+<!-- WHY US -->
 <section id="why">
   <div class="section-header reveal">
     <div class="section-tag">Why InfiniteXero</div>
     <h2 class="section-title">What Sets Us Apart</h2>
     <p class="section-desc">We're not just developers. We're Oracle APEX specialists with deep industry roots.</p>
   </div>
-
   <div class="why-grid">
-    <div class="why-card reveal">
-      <div class="why-number">01</div>
-      <h3>Pure APEX Focus</h3>
-      <p>Unlike generic IT firms, Oracle APEX is our core specialisation — not an add-on. Every solution is built by experts who live and breathe the platform.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-number">02</div>
-      <h3>Fusion-Native Thinking</h3>
-      <p>We understand Oracle Fusion's architecture, APIs, and data models deeply, enabling us to build extensions that feel native rather than bolted-on.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-number">03</div>
-      <h3>Agile Delivery</h3>
-      <p>Rapid iteration with working prototypes in days, not months. We keep you involved at every sprint with transparent progress and demos.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-number">04</div>
-      <h3>Security &amp; Compliance</h3>
-      <p>HIPAA, SOX, PCI-DSS — we build with compliance baked in, not retrofitted. Role-based access, audit logs, and data masking are standard.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-number">05</div>
-      <h3>Cost-Efficient Stack</h3>
-      <p>Oracle APEX is included with Oracle Database licensing. We maximise your existing investment, delivering enterprise apps without enterprise price tags.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-number">06</div>
-      <h3>Long-Term Partnership</h3>
-      <p>Post-launch support, version upgrades, performance tuning, and feature enhancements — we stay with you for the entire product lifecycle.</p>
-    </div>
+    <div class="why-card reveal"><div class="why-number">01</div><h3>Pure APEX Focus</h3><p>Unlike generic IT firms, Oracle APEX is our core specialisation — not an add-on. Every solution is built by experts who live and breathe the platform.</p></div>
+    <div class="why-card reveal"><div class="why-number">02</div><h3>Fusion-Native Thinking</h3><p>We understand Oracle Fusion's architecture, APIs, and data models deeply, enabling us to build extensions that feel native rather than bolted-on.</p></div>
+    <div class="why-card reveal"><div class="why-number">03</div><h3>Agile Delivery</h3><p>Rapid iteration with working prototypes in days, not months. We keep you involved at every sprint with transparent progress and demos.</p></div>
+    <div class="why-card reveal"><div class="why-number">04</div><h3>Security &amp; Compliance</h3><p>HIPAA, SOX, PCI-DSS — we build with compliance baked in, not retrofitted. Role-based access, audit logs, and data masking are standard.</p></div>
+    <div class="why-card reveal"><div class="why-number">05</div><h3>Cost-Efficient Stack</h3><p>Oracle APEX is included with Oracle Database licensing. We maximise your existing investment, delivering enterprise apps without enterprise price tags.</p></div>
+    <div class="why-card reveal"><div class="why-number">06</div><h3>Long-Term Partnership</h3><p>Post-launch support, version upgrades, performance tuning, and feature enhancements — we stay with you for the entire product lifecycle.</p></div>
   </div>
 </section>
 
-<!-- ═══ PROCESS ═══ -->
+<!-- PROCESS -->
 <section id="process">
   <div class="section-header reveal" style="text-align:center;">
     <div class="section-tag">How We Work</div>
     <h2 class="section-title">Our Delivery Process</h2>
     <p class="section-desc" style="margin:0 auto;">A lean, transparent process engineered for speed and quality.</p>
   </div>
-
   <div class="process-steps reveal">
-    <div class="process-step">
-      <div class="step-circle">01</div>
-      <h3>Discovery</h3>
-      <p>Deep-dive into your business workflows, current pain points, and technical landscape to define scope and success metrics.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-circle">02</div>
-      <h3>Architecture</h3>
-      <p>Design the data model, APEX application architecture, integration points, and security model before writing a single line of code.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-circle">03</div>
-      <h3>Build &amp; Iterate</h3>
-      <p>Agile sprints with working demos every two weeks. Continuous feedback loop ensures the product matches your expectations.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-circle">04</div>
-      <h3>Deploy &amp; Support</h3>
-      <p>Production deployment, user training, documentation, and ongoing support — we ensure a smooth launch and sustain excellence.</p>
-    </div>
+    <div class="process-step"><div class="step-circle">01</div><h3>Discovery</h3><p>Deep-dive into your business workflows, current pain points, and technical landscape to define scope and success metrics.</p></div>
+    <div class="process-step"><div class="step-circle">02</div><h3>Architecture</h3><p>Design the data model, APEX application architecture, integration points, and security model before writing a single line of code.</p></div>
+    <div class="process-step"><div class="step-circle">03</div><h3>Build &amp; Iterate</h3><p>Agile sprints with working demos every two weeks. Continuous feedback loop ensures the product matches your expectations.</p></div>
+    <div class="process-step"><div class="step-circle">04</div><h3>Deploy &amp; Support</h3><p>Production deployment, user training, documentation, and ongoing support — we ensure a smooth launch and sustain excellence.</p></div>
   </div>
 </section>
 
-<!-- ═══ TECH STACK ═══ -->
+<!-- TECH -->
 <section id="tech">
   <div class="section-header reveal">
     <div class="section-tag">Technology</div>
     <h2 class="section-title">Our Technology Stack</h2>
     <p class="section-desc">We work across the Oracle ecosystem and integrate with leading enterprise platforms.</p>
   </div>
-
   <div class="tech-grid reveal">
     <div class="tech-pill"><span class="tech-dot dot-blue"></span>Oracle APEX 23/24</div>
     <div class="tech-pill"><span class="tech-dot dot-blue"></span>Oracle Database 19c/21c</div>
@@ -1019,40 +346,26 @@
   </div>
 </section>
 
-<!-- ═══ CTA / CONTACT ═══ -->
+<!-- CONTACT -->
 <section id="contact">
-  <div class="cta-orb"></div>
+  <div class="contact-bg"></div>
   <div class="reveal" style="position:relative;z-index:1;">
     <div class="section-tag">Get In Touch</div>
     <h2 class="section-title">Ready to Build<br/>Something <em>Great?</em></h2>
     <p class="section-desc">Tell us about your Oracle APEX project and we'll get back to you within 24 hours.</p>
-
     <div class="cta-form">
       <input type="email" class="cta-input" placeholder="Your work email address"/>
-      <a href="mailto:hello@infinitexero.com" class="btn-primary">
-        Send Message
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <a href="mailto:hello@infinitexero.com" class="btn-primary">Send Message <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-
     <div class="cta-links">
-      <a href="mailto:hello@infinitexero.com" class="cta-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        hello@infinitexero.com
-      </a>
-      <a href="https://www.linkedin.com/company/infinitexero" class="cta-link" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2.667 5.333H5.333V13.333H2.667V5.333ZM4 4C3.264 4 2.667 3.403 2.667 2.667S3.264 1.333 4 1.333s1.333.597 1.333 1.334S4.736 4 4 4ZM13.333 13.333H10.667v-3.9c0-2.3-2.667-2.127-2.667 0v3.9H5.333V5.333H8v1.414C9.067 4.933 13.333 4.827 13.333 8.733v4.6Z"/></svg>
-        LinkedIn
-      </a>
-      <a href="https://infinitexero.com" class="cta-link" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-1.5 2-2.333 3.867-2.333 6S6.5 12 8 14M8 2c1.5 2 2.333 3.867 2.333 6S9.5 12 8 14M2 8h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        infinitexero.com
-      </a>
+      <a href="mailto:hello@infinitexero.com" class="cta-link"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>hello@infinitexero.com</a>
+      <a href="https://www.linkedin.com/company/infinitexero" class="cta-link" target="_blank"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M2.667 5.333H5.333V13.333H2.667V5.333ZM4 4C3.264 4 2.667 3.403 2.667 2.667S3.264 1.333 4 1.333s1.333.597 1.333 1.334S4.736 4 4 4ZM13.333 13.333H10.667v-3.9c0-2.3-2.667-2.127-2.667 0v3.9H5.333V5.333H8v1.414C9.067 4.933 13.333 4.827 13.333 8.733v4.6Z"/></svg>LinkedIn</a>
+      <a href="https://infinitexero.com" class="cta-link" target="_blank"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-1.5 2-2.333 3.867-2.333 6S6.5 12 8 14M8 2c1.5 2 2.333 3.867 2.333 6S9.5 12 8 14M2 8h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>infinitexero.com</a>
     </div>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-copy">© 2025 InfiniteXero. All rights reserved. Oracle and APEX are registered trademarks of Oracle Corporation.</div>
   <div class="footer-links">
@@ -1064,7 +377,6 @@
 </footer>
 
 <script>
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
@@ -1073,21 +385,8 @@
         obs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08 });
   reveals.forEach(r => obs.observe(r));
-
-  // Smooth active nav
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('nav a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === `#${current}` ? '#e8edf8' : '';
-    });
-  });
 </script>
 </body>
 </html>
